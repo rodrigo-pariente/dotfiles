@@ -1,0 +1,145 @@
+#!/usr/bin/env bash
+#
+# install-dotfiles
+#   - install my dotfiles
+#   - ...
+# rodrigo-pariente
+#   - github: github.com/rodrigo-pariente/
+#   - email : rodrigo_pariente@proton.me
+# credits
+#   - dave-eddy dotfiles:
+#     https://github.com/bahamas10/dotfiles
+
+usage() {
+  cat << 'EOF'
+usage: ./install-dotfiles (-h) (-g [-G]) [-b] [-i] [-u]
+
+  -h: print help.
+  -i: interactive actions.
+  -b: backup local dotfiles before changes.
+  -u: update from the official repo.
+  -g: update the local repo.
+    -G: update the official repo with git push.
+EOF
+}
+
+interaction() {
+  ! "$interactive" && return 1
+  local choice
+  printf "\e[33m%s\e[0m: '%s'? [y/n]\n" "$1" "$2"
+  read -r choice
+  [[ "${choice,,}" != "y" ]]
+}
+
+symlink() {
+  printf '%55s -> %s\n' "${1/#$HOME/\~}" "${2/#$HOME/\~}"
+  ln -nsf "$@"
+}
+
+# Update repo (local -> repo)
+generate_dotfiles() {
+  if "$git_action" && ! command -v git >/dev/null 2>&1; then
+    echo "git is needed to complete local update" >&2
+    return 1
+  fi
+
+  for dotfile in "$@"; do
+    local src="$HOME/.${dotfiles[$dotfile]}"
+    local dest="$PWD/$dotfile"
+
+    interaction "update repo's dotfile" "$dotfile" && continue
+
+    [[ -d "$dest" ]] && rm -rf -- "$dest"
+    cp -r -- "$src" "$dest"
+
+    printf '%55s -> %s\n' "${src/#$HOME/\~}" "${dest/#$HOME/\~}"
+  done
+
+  if "$git_action"; then
+    git add -A
+    git commit -m "$(printf 'update: %(%d/%m/%Y)T')"
+    git push
+  fi
+
+  printf "\e[1;35m%s\e[0m\n" "~repo update finished!"
+}
+
+install_dotfiles() {
+  for dotfile in "$@"; do
+    local src="$PWD/$dotfile"
+    local dest="$HOME/.${dotfiles[$dotfile]}"
+
+    interaction "install dotfile" "$dotfile" && continue
+
+    if [[ -d "$dest" && ! -L "$dest" ]]; then
+      if $backup; then
+        mv "$dest" "$PWD/backup/"
+      else
+        rm -rf -- "$dest"
+      fi
+    fi
+
+    symlink "$src" "$dest"
+  done
+
+  printf "\e[1;32m%s\e[0m\n" "~installation finished!"
+}
+
+backup=false
+interactive=false
+update=false
+git_action=false
+action="install"
+
+while getopts "hibugG" opt; do
+  case "$opt" in
+    h) usage; exit 0     ;;
+    i) interactive=true  ;;
+    b) backup=true       ;;
+    u) update=true       ;;
+    g) action="generate" ;;
+    G) git_action=true   ;;
+  esac
+done
+
+shift $((OPTIND - 1))
+
+if "$backup" && [[ ! -d "$PWD/backup" ]]; then
+  mkdir "$PWD/backup" || exit 1
+fi
+
+declare -A dotfiles=(
+  [ghostty]="config/ghostty"
+  [tmux]="config/tmux"
+  [nvim]="config/nvim"
+  [gitconfig]="gitconfig"
+  [bashrc]="bashrc"
+  [aliases]="aliases"
+  [greenhouse.zsh-theme]="oh-my-zsh/themes/greenhouse.zsh-theme"
+)
+
+if (( $# == 0 )); then
+  to_install=("${!dotfiles[@]}")
+else
+  to_install=()
+  for dotfile in "$@"; do
+    if [[ ! -v dotfiles["$dotfile"] ]]; then
+      echo "$dotfile not registered" >&2
+      exit 1
+    fi
+    to_install+=("$dotfile")
+  done
+fi
+
+if "$update"; then
+  if ! command -v git >/dev/null 2>&1; then
+    echo "git is needed to complete local update" >&2
+    exit 1
+  fi
+  git pull
+fi
+
+case "$action" in
+  generate) generate_dotfiles "${to_install[@]}" ;;
+   install) install_dotfiles "${to_install[@]}"  ;;
+esac

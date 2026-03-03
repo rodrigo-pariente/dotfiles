@@ -1,0 +1,51 @@
+# vi: ft=bash
+
+exists_cmd() {
+  command -v "$1" >/dev/null 2>&1
+}
+
+# enable color support of ls and also add handy aliases
+if [[ -x /usr/bin/dircolors ]]; then
+  test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+  alias ls='ls --color=auto'
+fi
+
+alias gogh='bash -c "$(wget -qO- https://git.io/vQgMr)"'
+
+if exists_cmd 'cmatrix'; then
+  alias sprinkles='cmatrix -r'
+fi
+
+if exists_cmd 'batcat'; then
+  alias bat='batcat'
+fi
+
+if ! exists_cmd 'help' && exists_cmd 'run-help'; then
+  alias help='run-help'
+fi
+
+if [[ "$TERM" == "xterm-ghostty" ]]; then
+  _get_ghostty_toggle() {
+    echo "sed -i 's/$1 = $2/$1 = $3/' '$HOME/.config/ghostty/config'"
+  }
+  # toggle background visibility
+  alias invisible="$(_get_ghostty_toggle 'background-opacity' '1' '0.8')"
+  alias visible="$(_get_ghostty_toggle 'background-opacity' '0.8' '1')"
+
+  # toggle window decoration
+  alias topless="$(_get_ghostty_toggle 'window-decoration' 'auto' 'none')"
+  alias topfull="$(_get_ghostty_toggle 'window-decoration' 'none' 'auto')"
+fi
+
+case "$(ps -p "$$")" in
+  *"bash"*) alias resource='source $HOME/.bashrc' ;;
+   *"zsh"*) alias resource='source $HOME/.zshrc'  ;;
+esac
+
+alias dl='$HOME/Downloads'
+alias doc='$HOME/Documents'
+alias mus='$HOME/Music'
+
+makec() {
+  make -C "$HOME/c-the-hard-way" "$@"
+}
