@@ -1,1 +1,1 @@
-/home/polyssance/.config/nvim/ftplugin/sh.lua
+sh.lua

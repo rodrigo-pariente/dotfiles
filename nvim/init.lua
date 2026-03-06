@@ -8,11 +8,10 @@
 --[[  REQUIREMENTS ]]--
 
 -- user keybindings
-require("config.mappings")
+require("configs.mappings")
 
 -- lazy plugins manager
-require("config.lazy")
-
+require("configs.lazy")
 
 --[[ APPEARENCE ]]--
 

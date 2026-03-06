@@ -128,6 +128,10 @@ fi
 # load cargo enviroment
 [[ -f ~/.cargo/env ]] && . ~/.cargo/env
 
+export PATH="$PATH:$HOME/.local/bin/"
+export VISUAL="nvim"
+export EDITOR="nvim"
+
 # >>> juliaup initialize >>>
 
 # !! Contents within this block are managed by juliaup !!

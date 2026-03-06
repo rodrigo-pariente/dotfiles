@@ -122,10 +122,7 @@ end, { desc = "Insert comment with filename" })
 --[[ PLUGIN MAPPINGS ]]--
 
 -- open oil file explorer
-map("n", "<leader>E", ":Oil<CR>", "open file explorer")
-
--- open pick file explorer
-map("n", "<leader>e", ":Pick files<CR>", "open file explorer")
+map("n", "<leader>e", ":Oil<CR>", "open file explorer")
 
 -- open term
 map("n", "<leader>z", ":lua require('FTerm').open()<CR>", "open terminal")

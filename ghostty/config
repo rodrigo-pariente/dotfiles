@@ -21,7 +21,7 @@ theme = Jellybeans
 title = " "
 
 # Background opacity; common values: 1, 0.8
-background-opacity = 1
+background-opacity = 0.8
 
 # # Window Configuration
 window-decoration = none
