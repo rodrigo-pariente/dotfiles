@@ -49,8 +49,10 @@ generate_dotfiles() {
 
     interaction "update repo's dotfile" "$dotfile" && continue
 
-    [[ -d "$dest" ]] && rm -rf -- "$dest"
-    cp -r -- "$src" "$dest"
+    if [[ ! -L "$src" ]]; then
+      cp -r -- "$src" "$dest"
+      [[ -d "$dest" ]] && rm -rf -- "$dest"
+    fi
 
     printf '%55s -> %s\n' "${src/#$HOME/\~}" "${dest/#$HOME/\~}"
   done
