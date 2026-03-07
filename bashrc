@@ -78,10 +78,11 @@ EOF
       echo -e "$border_left\033[1;35m$1\033[0m$border_right"
   }
 
+  local update=false
   local OPTIND OPTARG action
   while getopts 'uad' opt; do
     case "$opt" in
-      u)                 ;;
+      u) update=true     ;;
       a) action="append" ;;
       d) action="remove" ;;
     esac
@@ -89,7 +90,7 @@ EOF
 
   shift $((OPTIND - 1))
 
-  (( "$#" == 0 )) && _usage 2>&1 && return 1
+   ! "$update" && (( "$#" == 0 )) && _usage 2>&1 && return 1
 
   for flag in "$@"; do
     case "$action" in
