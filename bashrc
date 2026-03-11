@@ -33,7 +33,7 @@ shopt -s checkwinsize
 # Prompt theme: Greenhouse
 # ------------------------
 
-[[ -f ~/.git-prompt.sh ]] && . ~/.git-prompt.sh
+[[ -f ~/.git-prompt.sh ]] && . ~/.git-prompt.sh || __git_ps1() { :; }
 [[ -f ~/.flags ]] && flags="$(<~/.flags)" || flags=''
 
 export flags
@@ -130,20 +130,5 @@ fi
 [[ -f ~/.cargo/env ]] && . ~/.cargo/env
 
 export PATH="$PATH:$HOME/.local/bin/"
-export VISUAL="nvim"
-export EDITOR="nvim"
-
-# >>> juliaup initialize >>>
-
-# !! Contents within this block are managed by juliaup !!
-
-case ":$PATH:" in
-    *:/home/polyssance/.juliaup/bin:*)
-        ;;
-
-    *)
-        export PATH=/home/polyssance/.juliaup/bin${PATH:+:${PATH}}
-        ;;
-esac
-
-# <<< juliaup initialize <<<
+export VISUAL="/opt/nvim-linux-x86_64/bin/nvim"
+export EDITOR="/opt/nvim-linux-x86_64/bin/nvim"
