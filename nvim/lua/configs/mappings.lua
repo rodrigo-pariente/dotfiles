@@ -23,6 +23,8 @@ end
 
 --[[ MAPPINGS ]]--
 
+map("ca", "W", "w", "write")
+
 -- mapleader set to spaces
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
@@ -102,22 +104,38 @@ end
 
 --[[ PUT STATIC TEXT ]]--
 
-vim.keymap.set("n", "<leader>C", function()
-  local filename = vim.fn.expand("%:t")
+map("n", "<leader>C",
+    function()
+        local filename = vim.fn.expand("%:t")
 
-  vim.api.nvim_put({
-    "# " .. filename,
-    "#   - ...",
-    "#   - license: ...",
-    "# rodrigo-pariente",
-    "#   - github: github.com/rodrigo-pariente",
-    "#   - email : rodrigo_pariente@proton.me",
-    "# credits",
-    "#   - ...",
-    "#   - ...",
+        vim.api.nvim_put({
+            "# " .. filename,
+            "#   - ...",
+            "#   - license: ...",
+            "# rodrigo-pariente",
+            "#   - github: github.com/rodrigo-pariente",
+            "#   - email : rodrigo_pariente@proton.me",
+            "# credits",
+            "#   - ...",
+            "#   - ...",
 
-  }, "l", true, true)
-end, { desc = "Insert comment with filename" })
+        }, "l", true, true)
+    end,
+    "Insert comment with filename"
+)
+
+map("n", "<leader>L",
+    function()
+        vim.api.nvim_put({
+            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed " ..
+            "diam nonumy eirmod tempor invidunt ut labore et dolore magna " ..
+            "aliquyam erat, sed diam voluptua. At vero eos et accusam et " ..
+            "justo duo dolores et ea rebum. Stet clita kasd gubergren, no " ..
+            "sea takimata sanctus est Lorem ipsum dolor sit amet."
+        }, "l", true, true)
+    end,
+    "limpsum"
+)
 
 --[[ PLUGIN MAPPINGS ]]--
 

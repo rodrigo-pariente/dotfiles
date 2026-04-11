@@ -38,27 +38,42 @@ shopt -s checkwinsize
 
 export flags
 export icon=🐍
-
-dir_prompt() {
-  case "$PWD" in
-    "$HOME") echo '[home]'             ;;
-          /) echo '[root]'             ;;
-          *) echo "[${PWD/#$HOME/\~}]" ;;
-  esac
-}
-
-python_prompt() {
-  [[ -n "$VIRTUAL_ENV" ]] && echo "[${VIRTUAL_ENV##*/}]"
-}
-
 __last_exit=0
-update_last_exit() { __last_exit="${?/#0/$icon}" ; }
-PROMPT_COMMAND=update_last_exit
+__jobs=
+__dir=
+__python_prompt=
+update_prompt() {
+  # last_exit
+  __last_exit="${?/#0/$icon}"
 
-PS1='\[\033[1;32m\]╭─$([ \j != 0 ] && echo [\j])$(dir_prompt)\[\033[0m\]\
-$flags\[\033[33m\]$(python_prompt)\[\033[35m\]$(__git_ps1 "[%s]")\[\033[0m\]
-\[\033[1;32m\]╰─\[\033[37m\][\[\033[0m\]$__last_exit\[\033[37m\]]\
-\[\033[0m\] \$ '
+  # directory
+  case "$PWD" in
+    "$HOME") __dir="[home]"             ;;
+          /) __dir="[root]"             ;;
+          *) __dir="[${PWD/#$HOME/\~}]" ;;
+  esac
+
+  # jobs
+  local job_count="$(jobs -p | wc -l)"
+  case "$job_count" in
+    0) __jobs=""             ;;
+    *) __jobs="[$job_count]" ;;
+  esac
+
+  # python prompt
+  __python_prompt=""
+  [[ -n "$VIRTUAL_ENV" ]] && __python_prompt="[${VIRTUAL_ENV##*/}]"
+}
+PROMPT_COMMAND=update_prompt
+
+BGREEN='\[\e[1;32m\]'
+YELLOW='\[\e[0;33m\]'
+PURPLE='\[\e[0;35m\]'
+WHITE='\[\e[0;37m\]'
+RESET='\[\e[0;0m\]'
+PS1="${BGREEN}"'╭─$__jobs$__dir'"${RESET}"'$flags\
+'"${YELLOW}"'$__python_prompt'"${PURPLE}"'$(__git_ps1 "[%s]")
+'"${BGREEN}"'╰─['"${WHITE}"'$__last_exit'"${BGREEN}"']'"${RESET}"' \$ '
 
 # As part of my theme greenhouse, variable 'flags' stores colored '[msg]'
 badge() {
@@ -73,9 +88,9 @@ EOF
   }
 
   _get_flag() {
-      local border_left="\033[1;32m[\033[0m"
-      local border_right="\033[1;32m]\033[0m"
-      echo -e "$border_left\033[1;35m$1\033[0m$border_right"
+      local border_left="\e[1;32m[\e[0m"
+      local border_right="\e[1;32m]\e[0m"
+      echo -e "$border_left\e[35m$1\e[0m$border_right"
   }
 
   local update=false
@@ -90,7 +105,7 @@ EOF
 
   shift $((OPTIND - 1))
 
-   ! "$update" && (( "$#" == 0 )) && _usage 2>&1 && return 1
+  ! "$update" && (( "$#" == 0 )) && _usage 2>&1 && return 1
 
   for flag in "$@"; do
     case "$action" in
@@ -128,6 +143,11 @@ fi
 
 # load cargo enviroment
 [[ -f ~/.cargo/env ]] && . ~/.cargo/env
+
+if command -v "bat" >/dev/null 2>&1; then
+  export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+  export MANROFFOPT="-c"
+fi
 
 export PATH="$PATH:$HOME/.local/bin/"
 export VISUAL="/opt/nvim-linux-x86_64/bin/nvim"

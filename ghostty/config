@@ -16,15 +16,16 @@
 # theme = Black Metal (Burzum)
 # theme = Black Metal (Immortal)
 theme = Jellybeans
+# theme = Catppuccin Mocha
 
 # Title
 title = " "
 
 # Background opacity; common values: 1, 0.8
-background-opacity = 0.8
+background-opacity = 1
 
 # # Window Configuration
-window-decoration = none
+window-decoration = auto
 
 # Window-Theme
 window-theme = ghostty

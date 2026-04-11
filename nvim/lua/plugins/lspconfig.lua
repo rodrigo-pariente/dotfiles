@@ -4,7 +4,7 @@ return {
   -- servers = {
   --     roslyn = { enabled = true },
   -- },
-  enabled = false,
+  -- enabled = false,
 }
 
 
