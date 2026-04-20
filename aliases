@@ -13,7 +13,7 @@ fi
 alias gogh='bash -c "$(wget -qO- https://git.io/vQgMr)"'
 
 if exists_cmd 'cmatrix'; then
-  alias sprinkles='cmatrix -r'
+  alias sprinkles='cmatrix -rB'
 fi
 
 if exists_cmd 'batcat'; then

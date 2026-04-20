@@ -37,7 +37,7 @@ symlink() {
 }
 
 # Update repo (local -> repo)
-generate_dotfiles() {
+update_repo() {
   if "$git_action" && ! command -v git >/dev/null 2>&1; then
     echo "git is needed to complete local update" >&2
     return 1
@@ -142,6 +142,6 @@ if "$update"; then
 fi
 
 case "$action" in
-  generate) generate_dotfiles "${to_install[@]}" ;;
+  generate) update_repo "${to_install[@]}" ;;
    install) install_dotfiles "${to_install[@]}"  ;;
 esac

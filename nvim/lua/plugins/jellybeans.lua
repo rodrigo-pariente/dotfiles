@@ -5,8 +5,8 @@ return {
         lazy = false,
         priority = 1000,
         enabled = true,
-        config = function()
-            vim.cmd.colorscheme("jellybeans-nvim")
-        end,
+        -- config = function()
+        --     vim.cmd.colorscheme("jellybeans-nvim")
+        -- end,
     },
 }

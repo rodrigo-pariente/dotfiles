@@ -15,6 +15,11 @@ require("configs.lazy")
 
 --[[ APPEARENCE ]]--
 
+-- default colorscheme
+-- vim.cmd.colorscheme("jellybeans-nvim")
+-- vim.cmd.colorscheme("catppuccin-mocha")
+vim.cmd.colorscheme("dracula")
+
 -- rounded something
 vim.opt.winborder = "rounded"
 

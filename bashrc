@@ -33,6 +33,7 @@ shopt -s checkwinsize
 # Prompt theme: Greenhouse
 # ------------------------
 
+export VIRTUAL_ENV_DISABLE_PROMPT=1
 [[ -f ~/.git-prompt.sh ]] && . ~/.git-prompt.sh || __git_ps1() { :; }
 [[ -f ~/.flags ]] && flags="$(<~/.flags)" || flags=''
 
@@ -79,7 +80,7 @@ PS1="${BGREEN}"'╭─$__jobs$__dir'"${RESET}"'$flags\
 badge() {
   _usage() {
     cat <<- 'EOF'
-usage: (-a [FLAG ...]) (-r [FLAG ...]) (-u)
+usage: (-a [FLAG ...]) (-d [FLAG ...]) (-u)
 
   -u: update flag string into flag database
   -a: append flag
@@ -152,3 +153,5 @@ fi
 export PATH="$PATH:$HOME/.local/bin/"
 export VISUAL="/opt/nvim-linux-x86_64/bin/nvim"
 export EDITOR="/opt/nvim-linux-x86_64/bin/nvim"
+
+source "$HOME/.vulkan/1.4.341.1/setup-env.sh"

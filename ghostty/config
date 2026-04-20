@@ -5,7 +5,6 @@
 #   - github: github.com/rodrigo-pariente
 #   - email : rodrigo_pariente@proton.me
 
-
 # --------------------------------
 # Appearence
 # --------------------------------
@@ -15,8 +14,15 @@
 # theme = Black Metal (Bathory)
 # theme = Black Metal (Burzum)
 # theme = Black Metal (Immortal)
-theme = Jellybeans
+# theme = Jellybeans
 # theme = Catppuccin Mocha
+# theme = Dark Pastel
+# theme = Aizen Dark
+theme = Dracula
+
+# Github Screenshots
+# theme = GitHub Dark
+# window-padding-x = 20,20
 
 # Title
 title = " "
@@ -35,11 +41,16 @@ mouse-hide-while-typing = true
 cursor-style = block_hollow
 
 # Font Style
-font-family = CaskaydiaCove NFM
-font-family-bold = CaskaydiaCove NFM Bold
-font-family-italic = CaskaydiaCove NFM Italic
-font-family-bold-italic = CaskaydiaCove NFM Italic Bold
+# font-family = CaskaydiaCove NFM
+# font-family-bold = CaskaydiaCove NFM Bold
+# font-family-italic = CaskaydiaCove NFM Italic
+# font-family-bold-italic = CaskaydiaCove NFM Italic Bold
 font-size = 13
+
+font-family = JetBrainsMono NF SemiBold
+font-family-italic = JetBrainsMono NF SemiBold Italic
+font-family-bold-italic = JetBrainsMono NF Bold Italic
+font-family-bold = JetBrainsMono NF Bold
 
 # font-family = VictorMono NFM SemiBold
 # font-family-italic = VictorMono NFM SemiBold Italic
